@@ -1,0 +1,65 @@
+﻿@model WebApp.Areas.Profile.Models.WishList.OrderingViewModel
+@{ ViewData["Title"] = "Форма заказа"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h3>Форма заказа</h3>
+    <form asp-area="Profile" asp-action="BuyAllBooks" asp-controller="WishList" asp-antiforgery="true">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="FIO">ФИО:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="FIO" value="@Model.FIO" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="FIO" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Address">Адрес:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Address" value="@Model.Address" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Address" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="PhoneNumber">Номер телефона:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="PhoneNumber" />
+            </div>
+        </div>
+        <div>
+            <input asp-for="ClientId" value="@Model.ClientId" hidden />
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Profile" asp-action="ContentViewer" asp-controller="WishList">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Создать" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

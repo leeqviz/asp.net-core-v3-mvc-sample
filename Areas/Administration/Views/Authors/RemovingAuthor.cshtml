@@ -1,0 +1,50 @@
+﻿@model WebApp.Models.Database.Entities.Author
+@{ ViewData["Title"] = "Удаление автора"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+</style>
+
+<div class="main-container">
+    <h4>Удаление автора</h4>
+    @if (!ViewBag.RecordExists)
+    {
+        <form asp-area="Administration" asp-controller="Authors" asp-action="RemovingAuthor" method="post">
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Name">Имя:</label>
+                <div class="col-sm-4">
+                    <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.Name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-2 col-sm-6">
+                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-action="AuthorsList" asp-controller="Authors">Назад</a>
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Удалить" />
+                </div>
+            </div>
+        </form>
+    }
+    else 
+    {
+        <div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Name">Имя:</label>
+                <div class="col-sm-4">
+                    <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.Name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-2 col-sm-6">
+                    <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="Данная запись не может быть удалена!">
+                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-action="AuthorsList" asp-controller="Authors">Назад</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

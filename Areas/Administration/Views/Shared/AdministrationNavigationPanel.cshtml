@@ -1,0 +1,40 @@
+﻿<style>
+    .nav-panel-container {
+        width: 160px;
+        height: 520px;
+        border: 1px solid dimgray;
+        float: right;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+
+    .nav-panel-menu {
+        padding: 2px;
+        display: inline-block
+    }
+</style>
+
+<div class="nav-panel-container">
+    <div class="nav-panel-menu">
+        <div class="btn-group-vertical btn-block">
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Users" asp-action="UsersList">Пользователи</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Clients" asp-action="ClientsList">Клиенты</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Employees" asp-action="EmployeesList">Работники</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Administrators" asp-action="AdministratorsList">Администраторы</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <div class="btn-group-vertical btn-block">
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Books" asp-action="BooksList">Книги</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="AuthorsList">Авторы</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Publishers" asp-action="PublishersList">Издатели</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Genres" asp-action="GenresList">Жанры</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <div class="btn-group-vertical btn-block">
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Operations" asp-action="StoreOperationsList">Операции</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Copies" asp-action="StoreCopiesList">Экземпляры</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Companies" asp-action="CompaniesList">Сервисы</a>
+            <a class="btn btn-outline-dark " style="border-radius: 0px;" asp-area="Administration" asp-controller="Storages" asp-action="StoragesList">Хранилища</a>
+        </div>
+    </div> 
+</div>

@@ -1,0 +1,94 @@
+﻿@model WebApp.Areas.Management.Models.CopiesEditor.CopyDataViewModel
+@{ ViewData["Title"] = "Изменение экземпляра"; }
+
+<link rel="stylesheet" href="https://snipp.ru/cdn/select2/4.0.13/dist/css/select2.min.css">
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h3>Изменение экземпляра</h3>
+    <form asp-area="Management" asp-action="CopyEditing" asp-controller="Exemplars" asp-antiforgery="true">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Count">Количество:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="number" asp-for="Count" value="@Model.Count" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Count" />
+            </div>
+        </div>
+        <div class="form-group row">
+            @if (ViewBag.CompanyType.Equals("library"))
+            {
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Time">Дни:</label>
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="number" asp-for="Time" value="@Model.Time" />
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control-plaintext" readonly style="border-radius: 0px;" type="text" value="14 days by default" />
+                </div>
+                <div>
+                    <input hidden type="number" asp-for="Price" step="0.1" value="@Model.Price" />
+                </div>
+            }
+            else
+            {
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Price">Цена:</label>
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="number" step="0.1" asp-for="Price" value="@Model.Price" />
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control-plaintext" readonly style="border-radius: 0px;" type="text" value="0.0 $ by default" />
+                </div>
+                <div>
+                    <input hidden type="number" asp-for="Time" value="@Model.Time" />
+                </div>
+            }
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="PublicationId">Издание:</label>
+            <div class="col-sm-4">
+                <select class="form-control js-select2" asp-items="ViewBag.Publications" asp-for="PublicationId"></select>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="PublicationId" />
+            </div>
+        </div>
+        <div>
+            <input hidden type="number" asp-for="CopyId" value="@Model.CopyId" />
+            <input hidden type="number" asp-for="PublicationId" value="@Model.PublicationId" />
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-action="AvailableCopies" asp-controller="Exemplars">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Изменить" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/i18n/ru.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-select2').select2({});
+        });
+    </script>
+}

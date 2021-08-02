@@ -1,0 +1,53 @@
+﻿@model WebApp.Models.Database.Entities.Literature
+@{ ViewData["Title"] = "Изменение литературы"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h4>Изменение литературы</h4>
+    <form asp-area="Administration" asp-controller="Authors" asp-action="LiteratureEditing" asp-antiforgery="true" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Author.Name">Автор:</label>
+            <div class="col-sm-4">
+                <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.Author.Name" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Name">Название:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Name" value="@Model.Name" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Name" />
+            </div>
+        </div>
+        <div>
+            <input asp-for="AuthorId" value="@Model.AuthorId" hidden />
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-action="AuthorsList" asp-controller="Authors">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Добавить" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

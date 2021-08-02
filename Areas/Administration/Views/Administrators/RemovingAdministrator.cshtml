@@ -1,0 +1,45 @@
+﻿@model WebApp.Models.Database.Entities.Administrator
+@{ ViewData["Title"] = "Удаление администратора"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+</style>
+
+<div class="main-container">
+    <h4>Удаление администратора</h4>
+    <form asp-area="Administration" asp-controller="Administrators" asp-action="RemovingAdministrator" method="post">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="User.Name">Логин:</label>
+            <div class="col-sm-4">
+                <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.User.Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="User.Email">Email:</label>
+            <div class="col-sm-4">
+                <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.User.Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="UniqueKey">Ключ:</label>
+            <div class="col-sm-4">
+                <input class="form-control-plaintext" style="border-radius: 0px;" type="text" readonly value="@Model.UniqueKey">
+            </div>
+        </div>
+        <div>
+            <input type="text" hidden asp-for="UserId" value="@Model.UserId">
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Administrators" asp-action="AdministratorsList">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Удалить" />
+            </div>
+        </div>
+    </form>
+</div>

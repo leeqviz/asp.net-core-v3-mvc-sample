@@ -1,0 +1,230 @@
+﻿@model WebApp.Areas.Catalog.Models.Content.ContentViewModel
+@{ ViewData["Title"] = "Каталог"; }
+
+<style>
+    .control-menu {
+        float: left;
+        width: 300px;
+    }
+
+    .form-menu {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border: 1px solid dimgray;
+    }
+
+    .products {
+        list-style: none;
+        margin: 0 -20px 0 0;
+        padding: 0;
+    }
+
+    .product-wrapper {
+        display: block;
+        width: 100%;
+        float: left;
+        transition: width .2s;
+    }
+
+    @@media only screen and (min-width: 450px) {
+        .product-wrapper {
+            width: 75%;
+        }
+    }
+
+    @@media only screen and (min-width: 768px) {
+        .product-wrapper {
+            width: 50%;
+        }
+    }
+
+    @@media only screen and (min-width: 1000px) {
+        .product-wrapper {
+            width: 25%;
+        }
+    }
+
+    .product {
+        width: 200px;
+        display: inline-block;
+        border: 1px solid dimgray;
+        position: relative;
+        background: #fff;
+        margin: 0 10px 10px 0;
+        text-decoration: none;
+        z-index: 0;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+        .product:hover {
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+        }
+
+    .product-photo {
+        position: relative;
+        margin-top: 10px;
+        padding-bottom: 100%;
+        overflow: hidden;
+    }
+
+        .product-photo img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            transition: transform .4s ease-out;
+        }
+
+    .product:hover .product-photo img {
+        transform: scale(1.50);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="control-menu">
+    <div class="form-menu">
+        <form method="get" asp-action="AllBooks" asp-controller="Content" asp-area="Catalog">
+            <h3>Каталог</h3>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" style="font-weight: bold" asp-for="Search">Поиск</label>
+                <div class="col-sm-8">
+                    <input class="form-control" style="border-radius: 0px;" type="search" value="@Model.Search" name="search" asp-for="Search" />
+                </div>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" style="font-weight: bold" asp-for="Location">Сервис</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="border-radius: 0px;" name="location" asp-for="Location">
+                        <option>Все</option>
+                        <option>Библиотека</option>
+                        <option>Магазин</option>
+                    </select>
+                </div>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" style="font-weight: bold" asp-for="Type">Издание</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="border-radius: 0px;" name="type" asp-for="Type">
+                        <option>Все</option>
+                        <option>Бумажное</option>
+                        <option>Электронное</option>
+                    </select>
+                </div>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label" style="font-weight: bold" asp-for="Sort">Сортировка</label>
+                <div class="col-sm-8">
+                    <select class="form-control" style="border-radius: 0px;" name="sort" asp-for="Sort">
+                        <option>Название</option>
+                        <option>Издатель</option>
+                    </select>
+                </div>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group">
+                <div class="btn-group btn-block dropright">
+                    <button class="btn btn-outline-dark dropdown-toggle" style="border-radius: 0px;" type="button" data-toggle="dropdown">Жанры</button>
+                    <ul class="dropdown-menu" style="margin-left: 10px">
+                        @foreach (var i in ViewBag.GenresList)
+                        {
+                            <li>
+                                @if (Model.GenresIds.Contains((int)i.Id))
+                                {
+                                    <input checked style="margin-left: 5px" class="form-check-label" type="checkbox" name="genresIds" value="@i.Id" />
+                                }
+                                else
+                                {
+                                    <input style="margin-left: 5px" class="form-check-label" type="checkbox" name="genresIds" value="@i.Id" />
+                                }
+                                <span>@i.Name</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <div class="form-group">
+                <input class="btn btn-outline-dark btn-block" style="border-radius: 0px;" type="submit" value="Принять" />
+            </div>
+        </form>
+    </div>
+    <div style="margin-top: 10px">
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+        <form method="get" asp-action="AllBooks" asp-controller="Content" asp-area="Catalog" style="display:inline">
+            @foreach (var i in Model.GenresIds)
+            {
+                <input hidden name="genresIds" value="@i" />
+            }
+            <input hidden value="@Model.Search" name="search" />
+            <input hidden value="@Model.Sort" name="sort" />
+            <input hidden value="@Model.Location" name="location" />
+            <input hidden value="@Model.Type" name="type" />
+            <input hidden value="@(Model.PageViewModel.PageNumber - 1)" name="page" />
+            <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Назад" />
+        </form>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+        <form method="get" asp-action="AllBooks" asp-controller="Content" asp-area="Catalog" style="display:inline">
+            @foreach (var i in Model.GenresIds)
+            {
+                <input hidden name="genresIds" value="@i" />
+            }
+            <input hidden value="@Model.Search" name="search" />
+            <input hidden value="@Model.Sort" name="sort" />
+            <input hidden value="@Model.Location" name="location" />
+            <input hidden value="@Model.Type" name="type" />
+            <input hidden value="@(Model.PageViewModel.PageNumber + 1)" name="page" />
+            <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Вперед" />
+        </form>
+        }
+    </div>
+</div>
+
+<div style="margin-left: 320px;">
+    <ul class="products clearfix">
+        @foreach (var item in Model.Books)
+        {
+            <li class="product-wrapper">
+                <div class="product">
+                    <div class="product-photo">
+                        <img src="@Url.Content(item.ImagePath)" width="128" alt="Preview Image" />
+                    </div>
+                    <div>
+                        <h4 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">@item.PublicationName</h4>
+                        <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <b>Тип издания:</b> 
+                            @if (item.Type.Equals("paper"))
+                            {
+                                <span> бумажное</span>
+                            }
+                            else if (item.Type.Equals("electronic"))
+                            {
+                                <span> электронное</span>
+                            }<br />
+                            <b>Год издания:</b> @item.Year<br />
+                            <b>Издатель:</b> @item.PublisherName
+                        </p>
+                    </div>
+                    <div>
+                        <a class="btn btn-block btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="BookDetail" asp-route-id="@item.PublicationId">Подробнее</a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

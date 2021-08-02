@@ -1,0 +1,25 @@
+﻿<style>
+    .nav-panel-container {
+        width: 160px;
+        height: 140px;
+        border: 1px solid dimgray;
+        float: right;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+
+    .nav-panel-menu {
+        padding: 10px;
+        display: inline-block
+    }
+</style>
+
+<div class="nav-panel-container">
+    <div class="nav-panel-menu">
+        <div class="btn-group-vertical btn-block">
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Orders" asp-action="UnhandledOperations">Операции</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Exemplars" asp-action="AvailableCopies">Экземпляры</a>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Customers" asp-action="CustomersList">Клиенты</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<WebApp.Areas.Administration.Models.Storages.StorageRecordViewModel>
+@{ await Html.RenderPartialAsync("AdministrationNavigationPanel"); }
+@{ ViewData["Title"] = "Список хранилищ"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>Список хранилищ</h3>
+        <div>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Storages" asp-action="AddingStorage">Добавить</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <form asp-area="Administration" asp-action="StoragesList" asp-controller="Storages" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-top:20px">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Сервис</th>
+                    <th>Работники</th>
+                    <th>Операция</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Storage.Name</td>
+                        <td>@item.Storage.Company.Name</td>
+                        <td>
+                            @foreach (var employee in item.Employees)
+                            {
+                                @employee.UniqueKey<br />
+                            }
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Storages" asp-action="StorageEditing" asp-route-id="@item.Storage.Id">Изменить</a>
+                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Storages" asp-action="RemovingStorage" asp-route-id="@item.Storage.Id">Удалить</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

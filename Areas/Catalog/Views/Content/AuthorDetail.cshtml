@@ -1,0 +1,86 @@
+﻿@model WebApp.Areas.Catalog.Models.Content.AuthorDetailViewModel
+@{ ViewData["Title"] = Model.Author.Name; }
+
+<style>
+    .main-container {
+        margin: auto;
+        padding: 10px;
+        border: 1px solid dimgray;
+        width: 700px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <table>
+        <tr>
+            <td style="vertical-align: top;">
+                <div>
+                    <img class="img-thumbnail" style="border: 4px solid dimgray;" src="@Url.Content(Model.Author.ImagePath)" width="256" alt="Preview Image" />
+                </div>
+            </td>
+            <td style="vertical-align: top;">
+                <div style="margin-left: 10px">
+                    <h3>@Model.Author.Name</h3>
+                    <p>
+                        <b>Описание:</b><br />
+                        <pre style="word-wrap: break-word; font-family: Arial, Helvetica, sans-serif">@Model.Author.Description</pre>
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <hr style="background-color: dimgray; height: 1px;" />
+    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+        <div>
+            <p>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="AuthorEditing" asp-route-id="@Model.Author.Id">Изменить</a>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="RemovingAuthor" asp-route-id="@Model.Author.Id">Удалить</a>
+            </p>
+        </div>
+        <div>
+            <p>
+                <b>Литература:</b><br />
+                <table>
+                    @foreach (var literature in Model.Literatures)
+                    {
+
+                        <tr>
+                            <td>
+                                <span>@literature.Name</span>
+                            </td>
+                            <td>
+                                <span>
+                                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="LiteratureEditing" asp-route-id="@literature.Id">Изменить</a>
+                                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="RemovingLiterature" asp-route-id="@literature.Id">Удалить</a>
+                                </span>
+                            </td>
+                        </tr>
+
+                    }
+                </table>
+            </p>
+            <p>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Authors" asp-action="AddingLiterature" asp-route-authorId="@Model.Author.Id">Добавить</a>
+            </p>
+        </div>
+    }
+    else
+    {
+        <div>
+            <p>
+                <b>Литература:</b><br />
+                @foreach (var literature in Model.Literatures)
+                {
+                    <span>@literature.Name</span><br />
+                }
+            </p>
+        </div>
+    }
+</div>

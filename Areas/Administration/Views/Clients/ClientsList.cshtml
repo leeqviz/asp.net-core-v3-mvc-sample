@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebApp.Areas.Administration.Models.Clients.ClientRecordViewModel>
+@{ await Html.RenderPartialAsync("AdministrationNavigationPanel"); }
+@{ ViewData["Title"] = "Список клиентов"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>Список клиентов</h3>
+        <div></div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <form asp-area="Administration" asp-action="ClientsList" asp-controller="Clients" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Логин</th>
+                    <th>Email</th>
+                    <th>Категория</th>
+                    <th>Ключ</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>@item.Email</td>
+                        <td>@item.CategoryName</td>
+                        <td>@item.UniqueKey</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

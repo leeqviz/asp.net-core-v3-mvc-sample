@@ -1,0 +1,117 @@
+﻿@model WebApp.Areas.Profile.Models.PersonalData.DataViewModel
+@{ ViewBag.Title = "Редактор профиля"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h3>Редактор профиля</h3>
+    <form asp-area="Profile" asp-action="ProfileEditor" asp-controller="PersonalData" asp-antiforgery="true" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Name">Логин:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Name" value="@Model.Name" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Name" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Email">Email:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Email" value="@Model.Email" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Email" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Password">Пароль:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Password" value="@Model.Password" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Password" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="FIO">ФИО:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="FIO" value="@Model.FIO" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="FIO" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Address">Адрес:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Address" value="@Model.Address" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Address" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="PhoneNumber">Номер телефона:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="PhoneNumber" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Age">Возраст:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="number" min="6" max="100" asp-for="Age" value="@Model.Age" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Age" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="CategoryId">Категория:</label>
+            <div class="col-sm-4">
+                <select class="form-control" asp-items="ViewBag.CategoriesList" asp-for="CategoryId"></select>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="CategoryId" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Avatar">Аватар:</label>
+            <div class="col-sm-4">
+                <input class="form-control-file" asp-for="Avatar" type="file" />
+            </div>
+        </div>
+        <div>
+            <input asp-for="ProfileImage" type="text" value="@Model.ProfileImage" hidden />
+            <input asp-for="CategoryId" type="number" value="@Model.CategoryId" hidden />
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Profile" asp-action="ProfileViewer" asp-controller="PersonalData">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -1,0 +1,57 @@
+﻿@model WebApp.Models.Account.RegistrationViewModel
+@{ ViewData["Title"] = "Регистрация"; }
+
+<style>
+    .account-form {
+        position: absolute;
+        width: 400px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="account-form">
+    <h3>Регистрация</h3>
+    <form asp-action="Registration" asp-controller="Account" asp-antiforgery="true">
+        <div class="form-group">
+            <label class="col-form-label" style="font-weight: bold" asp-for="Name">Логин</label>
+            <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Name" />
+            <span asp-validation-for="Name" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" style="font-weight: bold" asp-for="Email">Email</label>
+            <input class="form-control" style="border-radius: 0px;" type="email" asp-for="Email" />
+            <span asp-validation-for="Email" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" style="font-weight: bold" asp-for="Password">Пароль</label>
+            <input class="form-control" style="border-radius: 0px;" type="password" asp-for="Password" />
+            <span asp-validation-for="Password" />
+        </div>
+        <div class="form-group">
+            <label class="col-form-label" style="font-weight: bold" asp-for="ConfirmPassword">Повтор пароля</label>
+            <input class="form-control" style="border-radius: 0px;" type="password" asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword" />
+        </div>
+        <div class="form-group">
+            <input class="btn btn-block btn-outline-dark" style="border-radius: 0px;" type="submit" value="Зарегистрироваться" />
+            <a class="text-dark" asp-action="Login" asp-controller="Account">Вход</a>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

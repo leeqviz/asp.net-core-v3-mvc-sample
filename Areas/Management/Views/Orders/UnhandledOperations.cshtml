@@ -1,0 +1,97 @@
+﻿@model IEnumerable<WebApp.Areas.Management.Models.OperationsViewer.OperationViewModel>
+@{ await Html.RenderPartialAsync("ManagementNavigationPanel"); }
+@{ ViewData["Title"] = "Необработанные операции"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>Необработанные операции</h3>
+        <div>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Orders" asp-action="HandledOperations">Обработанные операции</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <form asp-area="Management" asp-action="UnhandledOperations" asp-controller="OperationsViewer" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Инвентарный номер</th>
+                    <th>Ключ клиента</th>
+                    <th>Тип</th>
+                    <th>Дата</th>
+                    @if (ViewBag.CompanyType.Equals("store"))
+                    {
+                        <th>Заказ</th>
+                    }
+                    <th>Операция</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.CopyUniqueKey</td>
+                    <td>@item.ClientUniqueKey</td>
+                    <td>
+                        @if (item.Type.Equals("purchase"))
+                        {
+                            <span> покупка</span>
+                        }
+                        else if (item.Type.Equals("receive"))
+                        {
+                            <span> получение</span>
+                        }
+                        else if (item.Type.Equals("return"))
+                        {
+                            <span> возврат</span>
+                        }
+                    </td>
+                    <td>@item.Date</td>
+                    @if (ViewBag.CompanyType.Equals("store"))
+                    {
+                        <td>
+                            @item.Order.FIO<br />
+                            @item.Order.Address<br />
+                            @item.Order.PhoneNumber
+                        </td>
+                    }
+                    <td>
+                        <div style="display: inline-block" class="btn-group-vertical btn-block">
+                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Orders" asp-action="AcceptOperation" asp-route-id="@item.Id">Принять</a><br />
+                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Management" asp-controller="Orders" asp-action="DeclineOperation" asp-route-id="@item.Id">Отклонить</a>
+
+                        </div>
+                        </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

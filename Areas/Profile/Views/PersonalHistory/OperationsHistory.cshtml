@@ -1,0 +1,113 @@
+﻿@model WebApp.Areas.Profile.Models.PersonalHistory.PersonalHistoryViewModel
+@{ ViewData["Title"] = "История операций"; }
+
+<style>
+    .main-container {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .item-container {
+        padding: 10px;
+        border: 1px solid dimgray;
+        margin-top: 10px;
+    }
+
+        .item-container:hover {
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+        }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>История операций</h3>
+        <div>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Profile" asp-controller="PersonalData" asp-action="ProfileViewer">Назад</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;"/>
+        <form asp-area="Profile" asp-action="OperationsHistory" asp-controller="PersonalHistory" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" asp-for="Search" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        @if (Model.Operations.Count() == 0)
+        {
+            <div style="text-align: center; margin-top: 20px">
+                <h4>Вы не приобрели ни одну книгу</h4>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="AllBooks">Каталог</a>
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model.Operations)
+            {
+                <div class="item-container">
+                    <table>
+                        <tr>
+                            <td>
+                                <div>
+                                    <img class="img-thumbnail" style="border: 4px solid dimgray;" src="@Url.Content(item.ImagePath)" width="128" alt="Preview" />
+                                </div>
+                            </td>
+                            <td style="vertical-align: top;">
+                                <div style="margin-left: 10px">
+                                    <h4>@item.BookName</h4>
+                                    <p>
+                                        <b>Тип издания:</b>
+                                        @if (item.PublicationType.Equals("paper"))
+                                        {
+                                            <span> бумажное</span>
+                                        }
+                                        else if (item.PublicationType.Equals("electronic"))
+                                        {
+                                            <span> электронное</span>
+                                        }<br />
+                                        <b>Статус:</b>
+                                        @if (item.Status.Equals("processing"))
+                                        {
+                                            <span> обрабатывается</span>
+                                        }
+                                        else if (item.Status.Equals("accepted"))
+                                        {
+                                            <span> одобрено</span>
+                                        }
+                                        else if (item.Status.Equals("denied"))
+                                        {
+                                            <span> отклонено</span>
+                                        }<br />
+                                        <b>Дата:</b><span> @item.CreationDate</span>
+                                    </p>
+                                    @if (item.Type.Equals("receive") && item.Status.Equals("accepted"))
+                                    {
+                                        <p>
+                                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Profile" asp-controller="PersonalHistory" asp-action="ReturnBook" asp-route-id="@item.CopyId">Вернуть</a>
+                                        </p>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</div>

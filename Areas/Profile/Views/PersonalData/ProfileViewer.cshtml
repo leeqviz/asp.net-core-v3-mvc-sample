@@ -1,0 +1,95 @@
+﻿@model WebApp.Areas.Profile.Models.PersonalData.ProfileDataViewModel
+@{ ViewData["Title"] = "Профиль пользователя"; }
+
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+</style>
+
+<div class="main-container">
+    <h3>Профиль пользователя</h3>
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <img class="img-thumbnail" style="border: 4px solid dimgray;" src="@Url.Content(Model.User.ImagePath)" width="128" alt="Profile Image" />
+                </div>
+            </td>
+            <td style="vertical-align: top;">
+                <div style="margin-left: 10px;">
+                    <p>
+                        <b>Логин:</b><span> @Model.User.Name</span>
+                    </p>
+                    <p>
+                        <b>Дата регистрации:</b><span> @Model.User.RegistrationDate</span>
+                    </p>
+                    <p>
+                        <b>Email:</b><span> @Model.User.Email</span>
+                    </p>
+                    <p>
+                        @if (User.IsInRole("client"))
+                        {
+                            <b>Категория:</b>
+                            @if (Model.Client.Category != null)
+                            {
+                                <span> @Model.Client.Category.Name</span>
+                            }
+                            else
+                            {
+                                <span> нет</span>
+                            }
+                        }
+                        else
+                        {
+                            <b>Роль:</b><span> @Model.Role.Name</span>
+                        }
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <hr style="background-color: dimgray; height: 1px;" />
+                <div>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <p>
+                            <b>Ключ администратора:</b><span> @Model.Administrator.UniqueKey</span>
+                        </p>
+                    }
+                    else if (User.IsInRole("employee"))
+                    {
+                        <p>
+                            <b>Ключ работника:</b><span> @Model.Employee.UniqueKey</span>
+                        </p>
+                    }
+                    else if (User.IsInRole("client"))
+                    {
+                        <p>
+                            <b>Ключ клиента:</b><span> @Model.Client.UniqueKey</span>
+                        </p>
+                        <p>
+                            <b>ФИО:</b><span> @Model.Client.FIO</span>
+                        </p>
+                        <p>
+                            <b>Возраст:</b><span> @Model.Client.Age</span>
+                        </p>
+                        <p>
+                            <b>Адрес:</b><span> @Model.Client.Address</span>
+                        </p>
+                        <p>
+                            <b>Номер телефона:</b><span> @Model.Client.PhoneNumber</span>
+                        </p>
+                        <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-action="OperationsHistory" asp-controller="PersonalHistory" asp-area="Profile">История операций</a>
+                        <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-action="ProfileEditor" asp-controller="PersonalData" asp-area="Profile">Редактор профиля</a>
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

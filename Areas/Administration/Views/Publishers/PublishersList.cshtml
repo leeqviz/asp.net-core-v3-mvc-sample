@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebApp.Models.Database.Entities.Publisher>
+@{ await Html.RenderPartialAsync("AdministrationNavigationPanel"); }
+@{ ViewData["Title"] = "Список издателей"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .control-menu {
+        float: left;
+        width: 300px;
+    }
+
+    .form-menu {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border: 1px solid dimgray;
+    }
+
+    .items-container {
+        float: left;
+        margin-left: 20px;
+        margin-bottom: 60px;
+    }
+
+    .item-container {
+        padding: 10px;
+        border: 1px solid dimgray;
+        width: 600px;
+    }
+
+        .item-container:hover {
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+        }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="control-menu">
+        <div class="form-menu">
+            <h3>Список издателей</h3>
+            <div>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Publishers" asp-action="AddingPublisher">Добавить</a>
+            </div>
+            <hr style="background-color: dimgray; height: 1px;" />
+            <form asp-area="Administration" asp-action="PublishersList" asp-controller="Publishers" method="get">
+                <div class="form-group">
+                    <label class="col-form-label" style="font-weight: bold">Поиск</label>
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <hr style="background-color: dimgray; height: 1px;" />
+                <div class="form-group">
+                    <input class="btn btn-outline-dark btn-block" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="items-container">
+        @foreach (var item in Model)
+        {
+            <div class="item-container">
+                <p>
+                    <b>Название:</b><span> @item.Name</span>
+                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Publishers" asp-action="PublisherEditing" asp-route-id="@item.Id">Изменить</a>
+                    <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Publishers" asp-action="RemovingPublisher" asp-route-id="@item.Id">Удалить</a>
+                </p>
+            </div>
+            <div style="margin-top: 10px"></div>
+        }
+    </div>
+</div>

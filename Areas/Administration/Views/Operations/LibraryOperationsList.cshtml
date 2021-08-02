@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebApp.Areas.Administration.Models.Operations.OperationRecordViewModel>
+@{ await Html.RenderPartialAsync("AdministrationNavigationPanel"); }
+@{ ViewData["Title"] = "Список библиотечных операций"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>Список библиотечных операций</h3>
+        <div>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Operations" asp-action="StoreOperationsList">Список магазинных операций</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <form asp-area="Administration" asp-action="LibraryOperationsList" asp-controller="Operations" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-top: 20px">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Тип</th>
+                    <th>Дата</th>
+                    <th>Ключ клиента</th>
+                    <th>Ключ работника</th>
+                    <th>Инвентарный номер</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @if (item.Type.Equals("purchase"))
+                        {
+                            <span> покупка</span>
+                        }
+                        else if (item.Type.Equals("receive"))
+                        {
+                            <span> получение</span>
+                        }
+                        else if (item.Type.Equals("return"))
+                        {
+                            <span> возврат</span>
+                        }
+                    </td>
+                    <td>@item.Date</td>
+                    
+                    <td><a>@item.ClientUniqueKey</a></td>
+                    <td><a>@item.EmployeeUniqueKey</a></td>
+                    <td><a>@item.CopyUniqueKey</a></td>
+                    <td>
+                        @if (item.Status.Equals("processing"))
+                        {
+                            <span> обрабатывается</span>
+                        }
+                        else if (item.Status.Equals("accepted"))
+                        {
+                            <span> одобрено</span>
+                        }
+                        else if (item.Status.Equals("denied"))
+                        {
+                            <span> отклонено</span>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

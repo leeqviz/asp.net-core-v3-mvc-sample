@@ -1,0 +1,123 @@
+﻿@model WebApp.Areas.Administration.Models.Books.BookDataRecordViewModel
+@{ ViewData["Title"] = "Изменение книги"; }
+
+<link rel="stylesheet" href="https://snipp.ru/cdn/select2/4.0.13/dist/css/select2.min.css">
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h4>Изменение книги</h4>
+    <form asp-area="Administration" asp-controller="Books" asp-action="BookEditing" asp-antiforgery="true" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Publication.Name">Название:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Publication.Name" value="@Model.Publication.Name" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Publication.Name" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Publication.Year">Год:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="number" asp-for="Publication.Year" value="@Model.Publication.Year" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Publication.Year" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Publication.Description">Описание:</label>
+            <div class="col-sm-4">
+                <textarea class="form-control" style="border-radius: 0px; resize: none" asp-for="Publication.Description" data-val-maxlength-max="5000" rows="5" cols="40" data-val="true">@Model.Publication.Description</textarea>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Publication.Description" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Publication.Type">Тип:</label>
+            <div class="col-sm-4">
+                <input checked type="radio" asp-for="Publication.Type" value="electronic" /><span> Электронное</span><br />
+                <input type="radio" asp-for="Publication.Type" value="paper" /><span> Бумажное</span>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Publication.Type" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Publication.PublisherId">Издатель:</label>
+            <div class="col-sm-6">
+                <select class="form-control js-select2" asp-items="ViewBag.PublishersList" asp-for="Publication.PublisherId"></select>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Publication.PublisherId" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Genres">Жанры:</label>
+            <div class="col-sm-6">
+                <select class="form-control js-select2" multiple asp-items="ViewBag.GenresList" asp-for="Genres"></select>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Genres" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Literatures">Литература:</label>
+            <div class="col-sm-6">
+                <select class="form-control js-select2" multiple asp-items="ViewBag.LiteraturesList" asp-for="Literatures"></select>
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Literatures" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="PreviewImage">Изображение</label>
+            <div class="col-sm-4">
+                <input class="form-control-file" asp-for="PreviewImage" type="file" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="PreviewImage" />
+            </div>
+        </div>
+        <div>
+            <input asp-for="Publication.Id" value="@Model.Publication.Id" hidden />
+            <input asp-for="Publication.PublisherId" value="@Model.Publication.PublisherId" hidden />
+            <input asp-for="Publication.ImagePath" value="@Model.Publication.ImagePath" hidden />
+            <input asp-for="Publication.Type" value="@Model.Publication.Type" hidden />
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-action="BooksList" asp-controller="Books">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Изменить" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/i18n/ru.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-select2').select2({});
+        });
+    </script>
+}

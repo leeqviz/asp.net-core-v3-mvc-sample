@@ -1,0 +1,114 @@
+﻿@model IEnumerable<WebApp.Models.Home.BookDataViewModel>
+@{ ViewData["Title"] = "Веб-каталог библиотек и книжных магазинов города"; }
+
+<style>
+    .products {
+        list-style: none;
+        margin: 0 -20px 0 0;
+        padding: 0;
+    }
+
+    .product-wrapper {
+        display: block;
+        width: 100%;
+        float: left;
+        transition: width .2s;
+    }
+
+    @@media only screen and (min-width: 450px) {
+        .product-wrapper {
+            width: 66%;
+        }
+    }
+
+    @@media only screen and (min-width: 768px) {
+        .product-wrapper {
+            width: 45%;
+        }
+    }
+
+    @@media only screen and (min-width: 1000px) {
+        .product-wrapper {
+            width: 20%;
+        }
+    }
+
+    .product {
+        width: 200px;
+        display: inline-block;
+        border: 1px solid dimgray;
+        position: relative;
+        background: #fff;
+        margin: 0 10px 10px 0;
+        text-decoration: none;
+        z-index: 0;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+        .product:hover {
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+        }
+
+    .product-photo {
+        position: relative;
+        margin-top: 10px;
+        padding-bottom: 100%;
+        overflow: hidden;
+    }
+
+        .product-photo img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto;
+            transition: transform .4s ease-out;
+        }
+
+    .product:hover .product-photo img {
+        transform: scale(1.50);
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4" style="font-size: 46px;">Веб-каталог библиотек и книжных магазинов города</h1>
+    <h3 style="margin-top: 40px;">Последние обновления</h3>
+</div>
+
+<div style="margin-top: 20px;">
+    <ul class="products clearfix">
+        @foreach (var item in Model)
+        {
+            <li class="product-wrapper">
+                <div class="product">
+                    <div class="product-photo">
+                        <img src="@Url.Content(item.PreviewImage)" width="128" alt="Preview Image" />
+                    </div>
+                    <div>
+                        <h4 style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">@item.BookName</h4>
+                        <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            <b>Тип издания:</b>
+                            @if (item.Type.Equals("paper"))
+                            {
+                                <span> бумажное</span>
+                            }
+                            else if (item.Type.Equals("electronic"))
+                            {
+                                <span> электронное</span>
+                            }<br />
+                            <b>Год издания:</b> @item.Year<br />
+                            <b>Издатель:</b> @item.PublisherName
+                        </p>
+                    </div>
+                    <div>
+                        <a class="btn btn-block btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="BookDetail" asp-route-id="@item.PublicationId">Подробнее</a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>

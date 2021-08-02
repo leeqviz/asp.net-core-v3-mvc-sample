@@ -1,0 +1,59 @@
+﻿@model WebApp.Models.Database.Entities.Storage
+@{ ViewData["Title"] = "Добавление хранилища"; }
+
+<link rel="stylesheet" href="https://snipp.ru/cdn/select2/4.0.13/dist/css/select2.min.css">
+<style>
+    .main-container {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid dimgray;
+        margin-left: 100px;
+        margin-right: 100px;
+        padding: 10px;
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <h4>Добавление хранилища</h4>
+    <form asp-area="Administration" asp-controller="Storages" asp-action="AddingStorage" asp-antiforgery="true">
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="Name">Логин:</label>
+            <div class="col-sm-4">
+                <input class="form-control" style="border-radius: 0px;" type="text" asp-for="Name" />
+            </div>
+            <div class="col-sm-4">
+                <span asp-validation-for="Name" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold" asp-for="CompanyId">Сервис:</label>
+            <div class="col-sm-4">
+                <select class="form-control js-select2" asp-items="ViewBag.Companies" asp-for="CompanyId"></select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-2 col-sm-6">
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-action="StoragesList" asp-controller="Storages">Назад</a>
+                <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Добавить" />
+            </div>
+        </div>
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+    </form>
+</div>
+
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://snipp.ru/cdn/select2/4.0.13/dist/js/i18n/ru.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.js-select2').select2({});
+        });
+    </script>
+}

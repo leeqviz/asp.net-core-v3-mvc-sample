@@ -1,0 +1,157 @@
+﻿@model WebApp.Areas.Catalog.Models.Content.BookDetailViewModel
+@{ ViewData["Title"] = Model.Publication.Name; }
+
+<style>
+    .main-container {
+        margin: auto;
+        padding: 10px;
+        border: 1px solid dimgray;
+        width: 700px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <table>
+        <tr>
+            <td style="vertical-align: top;">
+                <div>
+                    <img class="img-thumbnail" style="border: 4px solid dimgray;" src="@Url.Content(Model.Publication.ImagePath)" width="256" alt="Preview Image" />
+                </div>
+            </td>
+            <td style="vertical-align: top;">
+                <div style="margin-left: 10px">
+                    <h3>@Model.Publication.Name</h3>
+                    <p>
+                        <b>Содержание:</b><br />
+                        @foreach (var item in Model.Literatures)
+                        {
+                            <b>Автор:</b><span> @item.AuthorName </span><a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="AuthorDetail" asp-route-id="@item.AuthorId">Подробнее</a><br />
+                            <b>Литература:</b><br />
+                            @foreach (var literature in item.Literatures)
+                            {
+                                <span>@literature.Name</span><br />
+                            }
+                            <br />
+                        }
+                        <b>Описание:</b>
+                        <pre style="word-wrap: break-word; font-family: Arial, Helvetica, sans-serif">@Model.Publication.Description</pre>
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <hr style="background-color: dimgray; height: 1px;" />
+    @if ((User.Identity.IsAuthenticated && User.IsInRole("client")) || !User.Identity.IsAuthenticated)
+    {
+        <div>
+            <b>Есть в наличии:</b><br />
+                                <table>
+                                    @foreach (var item in Model.Locations)
+                                    {
+                                    <tr>
+                                        <td>
+                                            <b>Компания:</b><span> @item.Company.Name</span><br />
+                                            <b>Хранилище:</b><span> @item.Storage.Name</span>
+                                        </td>
+
+                                        @if (item.Copy.Count > 0)
+                                        {
+                                    <td>
+                                        @if (item.Company.Type.Equals("library"))
+                                        {
+                                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="GetBook" asp-route-id="@item.Copy.Id">Взять</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="OrderForm" asp-route-id="@item.Copy.Id">Купить</a>
+                                        }
+                                    </td>
+                                                }
+                                            
+                                            <td>
+                                                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Catalog" asp-controller="Content" asp-action="AddBookToWishList" asp-route-id="@item.Copy.Id">В желаемое</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+        </div>
+    }
+    else if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+        <div>
+            <p>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Books" asp-action="BookEditing" asp-route-id="@Model.Publication.Id">Изменить</a>
+                <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Books" asp-action="RemovingBook" asp-route-id="@Model.Publication.Id">Удалить</a>
+            </p>
+        </div>
+    }
+
+</div>
+
+@if (User.IsInRole("client"))
+{
+    <div class="main-container" style="margin-top: 10px">
+        <h4>Ваш отзыв</h4>
+        <form method="post" asp-action="AddHistory" asp-controller="Content" asp-area="Catalog">
+            <div>
+                <input type="number" value="@Model.Publication.Id" name="id" hidden />
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold">Рейтинг:</label>
+                <div class="col-sm-2">
+                    @if (Model.PersonalHistory != null)
+                    {
+                        <input class="form-control" style="border-radius: 0px;" name="rating" type="number" value="@Model.PersonalHistory.Rating" min="1" max="5" />
+                    }
+                    else
+                    {
+                        <input class="form-control" style="border-radius: 0px;" name="rating" type="number" min="1" max="5" />
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2" style="text-align: right; font-weight: bold">Комментарий:</label>
+                <div class="col-sm-4">
+                    @if (Model.PersonalHistory != null)
+                    {
+                        <textarea class="form-control" style="border-radius: 0px; resize: none" name="comment" data-val-maxlength-max="5000" rows="5" cols="40" data-val="true">@Model.PersonalHistory.Comment</textarea>
+                    }
+                    else
+                    {
+                        <textarea class="form-control" style="border-radius: 0px; resize: none" name="comment" data-val-maxlength-max="5000" rows="5" cols="40" data-val="true"></textarea>
+                    }
+                </div>
+            </div>
+            <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+        </form>
+    </div>
+    <div class="main-container" style="margin-top: 10px">
+        <h4>Другие отзывы - @Model.Histories.Count()</h4>
+        @foreach (var item in Model.Histories)
+        {
+            <div>
+                <img src="@Url.Content(item.UserProfileImage)" width="32" style="float: left" alt="Profile Image" />
+                <h6>@item.UserName</h6>
+                <p>
+                    <b>Рейтинг:</b><span> @item.Rating</span>
+                </p>
+                <p>
+                    <b>Комментарий:</b><span> @item.Comment</span>
+                </p>
+                <hr style="background-color: dimgray; height: 1px;"/>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="main-container" style="margin-top: 10px">
+        <h5 style="text-align:center">Чтобы просматривать отзывы, необходимо авторизоваться как клиент</h5>
+    </div>
+}

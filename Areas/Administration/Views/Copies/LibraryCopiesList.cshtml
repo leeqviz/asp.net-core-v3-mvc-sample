@@ -1,0 +1,81 @@
+﻿@model IEnumerable<WebApp.Areas.Administration.Models.Copies.CopyRecordViewModel>
+@{ await Html.RenderPartialAsync("AdministrationNavigationPanel"); }
+@{ ViewData["Title"] = "Список библиотечных экземпляров"; }
+
+<style>
+    .main-container {
+        margin-right: 180px;
+    }
+
+    .form-menu {
+        border: 1px solid dimgray;
+        padding-top: 14px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control:focus {
+        border-color: dimgray;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0) inset, 0px 0px 8px rgba(0, 0, 0, 0);
+    }
+</style>
+
+<div class="main-container">
+    <div class="container form-menu">
+        <h3>Список библиотечных экземпляров</h3>
+        <div>
+            <a class="btn btn-outline-dark" style="border-radius: 0px;" asp-area="Administration" asp-controller="Copies" asp-action="StoreCopiesList">Магазинные экземпляры</a>
+        </div>
+        <hr style="background-color: dimgray; height: 1px;" />
+        <form asp-area="Administration" asp-action="LibraryCopiesList" asp-controller="Copies" method="get">
+            <div class="form-group row">
+                <div class="col-sm-4">
+                    <input class="form-control" style="border-radius: 0px;" type="search" name="search" value="@ViewBag.SearchData" />
+                </div>
+                <div class="col-sm-1">
+                    <input class="btn btn-outline-dark" style="border-radius: 0px;" type="submit" value="Принять" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Инвентарный номер</th>
+                    <th>Ключ работника</th>
+                    <th>Дата изменения</th>
+                    <th>Издание</th>
+                    <th>Сервис</th>
+                    <th>Дни</th>
+                    <th>Количество</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CopyUniqueKey</td>
+                        <td>@item.EmployeeUniqueKey</td>
+                        <td>@item.ModifiedDate</td>
+                        <td>@item.PublicationName</td>
+                        <td>@item.CompanyName</td>
+                        <td>@item.Time</td>
+                        <td>@item.Count</td>
+                        <td>
+                            @if (item.Status.Equals("available"))
+                            {
+                                <span>@item.Status</span>
+                            }
+                            else if (item.Status.Equals("written-off"))
+                            {
+                                <span>@item.Status</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
